@@ -5,7 +5,7 @@ import os # Biblioteca para manipulação de arquivos e diretórios
 
 def download_video(urls, apenas_audio = True, baixar_playlist = False, video_format='mp4', audio_format='mp3'): # Função para baixar um vídeo do YouTube
     
-    pasta_destino = r'C:\Users\torug\Desktop\Raps\DIVX' # Caminho da pasta de destino
+    pasta_destino = r'escolha/seu/caminho/aqui' # Caminho da pasta de destino
 
     if not os.path.exists(pasta_destino): # Verifica se a pasta de destino existe
         os.makedirs(pasta_destino) # Cria a pasta de destino se ela não existir
