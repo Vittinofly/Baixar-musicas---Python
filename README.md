@@ -31,7 +31,5 @@ Projetinho em Python para baixar musicas diretamente do Youtube
    - Se vídeo, escolha o formato (divx/mp4).
 
 5. **Aguarde o download:**
-   - Os arquivos serão salvos na pasta especificada no código (por padrão: `escolha/seu/caminho/preferido/`).
+   - Os arquivos serão salvos na pasta especificada no código
    - Verifique o histórico de downloads para evitar repetições.
-
-**Nota:** Edite o caminho da pasta de destino no código se necessário. 
