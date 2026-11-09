@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block titulo %}Política de privacidade — {{ cfg.SITE_NAME }}{% endblock %}
+{% set contato = cfg.CONTACT_EMAIL or 'o botão "Falar com o suporte" no rodapé do site' %}
+{% block conteudo %}
+<article class="legal">
+  <h1 class="h1-menor">Política de privacidade</h1>
+  <p class="sub">Última atualização: {{ atualizado }}</p>
+
+  <p>Esta política explica quais dados pessoais o {{ cfg.SITE_NAME }} trata, por quê, por quanto tempo e como você pode
+    exercer seus direitos, conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018, "LGPD").</p>
+
+  <h2>1. Quem é o controlador</h2>
+  <p>{{ cfg.OWNER_NAME }}, responsável pelo {{ cfg.SITE_NAME }}. Contato para assuntos de privacidade: {{ contato }}.</p>
+
+  <h2>2. Quais dados tratamos</h2>
+  <div class="tabela-wrap">
+    <table class="tabela-compacta">
+      <thead><tr><th>Dado</th><th>Para quê</th><th>Base legal (LGPD, art. 7º)</th><th>Por quanto tempo</th></tr></thead>
+      <tbody>
+        <tr><td>Endereço IP e dados técnicos de acesso (data, hora, página, navegador)</td>
+          <td>Segurança, limite do plano Free, prevenção de abuso e cumprimento do Marco Civil da Internet</td>
+          <td>Obrigação legal (II) e legítimo interesse (IX)</td><td>6 meses (Lei nº 12.965/2014, art. 15)</td></tr>
+        <tr><td>Links e títulos dos vídeos pedidos</td>
+          <td>Executar o download, estatísticas de uso e diagnóstico de erros</td>
+          <td>Execução de contrato (V) e legítimo interesse (IX)</td><td>6 meses</td></tr>
+        <tr><td>Arquivos gerados</td><td>Entregar o arquivo a você</td><td>Execução de contrato (V)</td>
+          <td>Até {{ cfg.FILE_TTL_MIN }} minutos, depois são apagados</td></tr>
+        <tr><td>E-mail</td><td>Criar a conta, enviar o link de acesso e avisos sobre o Premium</td>
+          <td>Execução de contrato (V)</td><td>Enquanto a conta existir</td></tr>
+        <tr><td>Histórico de downloads (Premium)</td><td>Mostrar o que você já baixou e permitir baixar de novo</td>
+          <td>Execução de contrato (V)</td><td>Até você apagar o item ou excluir a conta</td></tr>
+        <tr><td>Pagamentos (valor, data, situação e identificador do Mercado Pago)</td>
+          <td>Ativar o Premium, atendimento e obrigações fiscais</td>
+          <td>Execução de contrato (V) e obrigação legal (II)</td><td>5 anos</td></tr>
+        <tr><td>Mensagens enviadas ao suporte (nome, e-mail, texto)</td><td>Responder você</td>
+          <td>Execução de contrato (V) e legítimo interesse (IX)</td><td>1 ano após a última mensagem</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Não pedimos CPF, endereço, telefone nem dados sensíveis. Os dados do cartão ou da conta bancária são tratados
+    diretamente pelo Mercado Pago, conforme a política de privacidade dele; nós não os recebemos.</p>
+
+  <h2>3. Cookies e armazenamento no navegador</h2>
+  <p>Usamos apenas um cookie essencial de sessão, para manter você conectado (dura até 30 dias ou até você sair).
+    O site guarda no seu navegador o identificador da conversa com o suporte, para você continuar de onde parou.
+    A extensão guarda no navegador o endereço do servidor e sua chave de acesso. Não usamos cookies de publicidade
+    nem ferramentas de rastreamento de terceiros.</p>
+
+  <h2>4. Com quem compartilhamos</h2>
+  <ul>
+    <li><strong>Mercado Pago</strong>: processamento do pagamento (recebe seu e-mail e o valor);</li>
+    <li><strong>Provedor de e-mail</strong>: envio do link de acesso e avisos;</li>
+    <li><strong>Provedor de hospedagem</strong>: onde o serviço e o banco de dados ficam;</li>
+    <li><strong>Autoridades</strong>: somente mediante ordem judicial ou obrigação legal.</li>
+  </ul>
+  <p>Para baixar um vídeo, nosso servidor se conecta ao YouTube em nome próprio; seus dados pessoais não são enviados ao YouTube.
+    Não vendemos nem alugamos dados pessoais. Alguns desses fornecedores podem armazenar dados fora do Brasil, com as
+    garantias exigidas pela LGPD (art. 33).</p>
+
+  <h2>5. Segurança</h2>
+  <p>Usamos conexão criptografada (HTTPS), guardamos as chaves de acesso apenas em forma de hash (nem nós conseguimos lê-las),
+    os links de login valem por {{ cfg.LOGIN_LINK_TTL_MIN }} minutos e só funcionam uma vez, e o acesso administrativo é restrito.
+    Em caso de incidente de segurança que possa trazer risco a você, avisaremos você e a ANPD.</p>
+
+  <h2>6. Seus direitos</h2>
+  <p>Pela LGPD (art. 18), você pode pedir a qualquer momento: confirmação de que tratamos seus dados, acesso a eles, correção,
+    anonimização ou eliminação dos dados desnecessários, portabilidade, informação sobre compartilhamento, e exclusão da conta.
+    Também pode se opor a tratamentos baseados em legítimo interesse e reclamar à Autoridade Nacional de Proteção de Dados (ANPD).
+    Para exercer qualquer direito, use {{ contato }}. Respondemos em até 15 dias.</p>
+  <p>Alguns dados podem ser mantidos mesmo após a exclusão da conta quando a lei obrigar (registros de acesso e dados fiscais),
+    pelo prazo indicado na tabela.</p>
+
+  <h2>7. Menores de idade</h2>
+  <p>O serviço não é direcionado a menores de 13 anos. A assinatura do Premium deve ser feita por maiores de 18 anos ou com
+    autorização do responsável legal.</p>
+
+  <h2>8. Mudanças nesta política</h2>
+  <p>Se mudarmos esta política, atualizaremos a data no topo e avisaremos no site ou por e-mail quando a mudança for relevante.</p>
+</article>
+{% endblock %}

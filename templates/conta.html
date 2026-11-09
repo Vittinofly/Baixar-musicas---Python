@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block titulo %}Minha conta — {{ cfg.SITE_NAME }}{% endblock %}
+{% block conteudo %}
+<section class="conta">
+  <div class="conta-topo">
+    <div>
+      <h1 class="h1-menor">Minha conta</h1>
+      <p class="sub">{{ usuario.email }}</p>
+    </div>
+    <form method="post" action="/sair"><input type="hidden" name="csrf" value="{{ csrf }}">
+      <button class="btn-sec" type="submit">Sair</button></form>
+  </div>
+
+  <div class="painel plano-atual">
+    {% if premium %}
+      <h2 class="h2-painel">Premium ativo</h2>
+      <p>{% if usuario.premium_until %}Válido até <strong>{{ usuario.premium_until|data }}</strong>.{% else %}Sem data de vencimento.{% endif %}
+        Você usou <strong>{{ usados_24h }} de {{ cfg.PREMIUM_DAILY_LIMIT }}</strong> downloads nas últimas 24 horas.</p>
+      <div class="medidor medidor-mini" aria-hidden="true">
+        <div class="segmentos" style="--n: 40">
+          {% set acesos = ((usados_24h / cfg.PREMIUM_DAILY_LIMIT) * 40)|round(0, 'ceil')|int %}
+          {% for i in range(40) %}<i class="{{ 'on' if i < acesos }}{{ ' pico' if i < acesos and i >= 34 }}"></i>{% endfor %}
+        </div>
+      </div>
+      {% if usuario.premium_until %}
+      <form method="post" action="/assinar" class="linha-acoes"><input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="btn-sec" type="submit">Renovar por mais {{ cfg.PREMIUM_DAYS }} dias ({{ preco }})</button></form>
+      {% endif %}
+    {% else %}
+      <h2 class="h2-painel">Plano Free</h2>
+      <p>Assine o Premium para usar a extensão, baixar playlists, vídeos de até {{ cfg.PREMIUM_MAX_DURATION_MIN }} min,
+        MP3 em 320 kbps, vídeo até 4K e ter histórico do que já baixou.</p>
+      <form method="post" action="/assinar" class="linha-acoes"><input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="btn" type="submit">Assinar Premium por {{ preco }}</button></form>
+      <p class="nota">{{ cfg.PREMIUM_DAYS }} dias de acesso, no Pix ou cartão, sem renovação automática.</p>
+    {% endif %}
+  </div>
+
+  {% if premium %}
+  <div class="painel" id="chave">
+    <h2 class="h2-painel">Chave de acesso da extensão</h2>
+    {% if nova_chave %}
+      <p>Copie a chave agora: por segurança ela não é mostrada de novo. A chave anterior parou de funcionar.</p>
+      <div class="chave-caixa">
+        <code id="chave-texto">{{ nova_chave }}</code>
+        <button class="btn" type="button" id="copiar-chave">Copiar</button>
+      </div>
+    {% else %}
+      <p>A chave conecta a extensão à sua conta. Gerar uma nova desativa a anterior.</p>
+      <form method="post" action="/conta/chave"><input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="btn" type="submit">Gerar chave de acesso</button></form>
+    {% endif %}
+    <p class="nota">Baixe a extensão para o <a href="/extensao/chrome.zip">Chrome ou Edge</a> ou para o
+      <a href="/extensao/firefox.zip">Firefox</a>. Veja <a href="/#extensao">como instalar</a>.</p>
+  </div>
+
+  {% if historico %}
+  <div class="painel">
+    <h2 class="h2-painel">Últimos downloads</h2>
+    <ul class="lista-simples">
+      {% for h in historico %}
+        <li><a href="{{ h.url }}" target="_blank" rel="noopener">{{ h.title }}</a>
+          <span>{{ h.fmt|upper }}, {{ h.created_at|datahora }}</span></li>
+      {% endfor %}
+    </ul>
+    <p class="nota">O histórico completo, com busca e "Baixar de novo", fica na extensão.</p>
+  </div>
+  {% endif %}
+  {% endif %}
+
+  {% if pagamentos %}
+  <div class="painel">
+    <h2 class="h2-painel">Pagamentos</h2>
+    <div class="tabela-wrap">
+      <table class="tabela-compacta">
+        <thead><tr><th>Data</th><th>Valor</th><th>Situação</th></tr></thead>
+        <tbody>
+          {% for p in pagamentos %}
+          {% set nomes = {'approved': 'Aprovado', 'pending': 'Aguardando pagamento', 'rejected': 'Recusado',
+                          'cancelled': 'Cancelado', 'refunded': 'Estornado', 'review': 'Em análise'} %}
+          <tr><td>{{ p.created_at|datahora }}</td>
+            <td>R$ {{ '%.2f'|format(p.amount)|replace('.', ',') }}</td>
+            <td>{{ nomes.get(p.status, p.status) }}
+              {% if p.status == 'pending' and p.checkout_url %} · <a href="{{ p.checkout_url }}">Pagar agora</a>{% endif %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  (() => {
+    const b = document.getElementById('copiar-chave');
+    if (!b) return;
+    b.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(document.getElementById('chave-texto').textContent.trim()); b.textContent = 'Copiada'; }
+      catch { b.textContent = 'Selecione e copie'; }
+    });
+  })();
+</script>
+{% endblock %}

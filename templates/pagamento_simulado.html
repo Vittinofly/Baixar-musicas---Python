@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block titulo %}Pagamento de teste — {{ cfg.SITE_NAME }}{% endblock %}
+{% block conteudo %}
+<section class="pagina-estreita">
+  <h1 class="h1-menor">Pagamento de teste</h1>
+  <p class="sub">O Mercado Pago ainda não foi configurado (YTD_MP_ACCESS_TOKEN), então este é um pagamento simulado para testar o fluxo.
+    Nenhum valor é cobrado.</p>
+  <div class="painel form-coluna">
+    <p>Premium por {{ pagamento.days }} dias: <strong>R$ {{ '%.2f'|format(pagamento.amount)|replace('.', ',') }}</strong></p>
+    <form method="post"><input type="hidden" name="csrf" value="{{ csrf }}">
+      <button class="btn btn-cheio" type="submit">Aprovar pagamento de teste</button></form>
+    <a href="/conta" class="link-forte">Cancelar</a>
+  </div>
+</section>
+{% endblock %}

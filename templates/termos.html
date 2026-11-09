@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block titulo %}Termos de uso — {{ cfg.SITE_NAME }}{% endblock %}
+{% set contato = cfg.CONTACT_EMAIL or 'o botão "Falar com o suporte" no rodapé do site' %}
+{% block conteudo %}
+<article class="legal">
+  <h1 class="h1-menor">Termos de uso</h1>
+  <p class="sub">Última atualização: {{ atualizado }}</p>
+
+  <h2>1. Aceite</h2>
+  <p>Ao usar o {{ cfg.SITE_NAME }} (o "serviço"), pelo site ou pela extensão, você concorda com estes Termos e com a
+    <a href="/privacidade">Política de privacidade</a>. Se não concordar, não use o serviço. O serviço é oferecido por
+    {{ cfg.OWNER_NAME }} ("nós").</p>
+
+  <h2>2. O que o serviço faz</h2>
+  <p>O {{ cfg.SITE_NAME }} é uma ferramenta técnica que converte, a seu pedido, um vídeo público do YouTube em arquivo de
+    áudio ou vídeo para uso pessoal. Não hospedamos, catalogamos nem distribuímos conteúdo: o arquivo é gerado sob demanda,
+    entregue a quem pediu e apagado do servidor em até {{ cfg.FILE_TTL_MIN }} minutos.</p>
+
+  <h2>3. Uso permitido e sua responsabilidade</h2>
+  <p>Você só pode baixar conteúdo que tem direito de usar, por exemplo: conteúdo que você mesmo criou, conteúdo com licença
+    que permite download (como Creative Commons), obras em domínio público, ou quando o titular dos direitos autorizou.
+    Você é o único responsável pelo que baixa e pelo uso que faz dos arquivos, inclusive perante os titulares de direitos
+    autorais (Lei nº 9.610/1998) e os Termos de Serviço do YouTube.</p>
+  <p>É proibido:</p>
+  <ul>
+    <li>baixar conteúdo para redistribuir, revender, publicar ou exibir publicamente sem autorização;</li>
+    <li>tentar contornar proteções técnicas (DRM), conteúdo pago ou com restrição de idade;</li>
+    <li>usar robôs, scripts ou qualquer automação para fazer pedidos em massa;</li>
+    <li>compartilhar sua chave de acesso Premium com outras pessoas;</li>
+    <li>tentar invadir, sobrecarregar ou atrapalhar o funcionamento do serviço.</li>
+  </ul>
+
+  <h2>4. Planos e limites</h2>
+  <p><strong>Free:</strong> pelo site, um link por vez, vídeos de até {{ cfg.FREE_MAX_DURATION_MIN }} minutos e até
+    {{ cfg.FREE_LIMIT_PER_HOUR }} downloads por hora por conexão.</p>
+  <p><strong>Premium:</strong> pela extensão e pelo site, vídeos de até {{ cfg.PREMIUM_MAX_DURATION_MIN }} minutos,
+    até {{ cfg.PREMIUM_DAILY_LIMIT }} downloads a cada 24 horas, playlists, maior qualidade e histórico.</p>
+  <p>Podemos ajustar os limites para proteger o serviço, avisando no site com antecedência quando a mudança afetar o Premium já pago.</p>
+
+  <h2>5. Pagamento, validade e reembolso</h2>
+  <p>O Premium custa {{ preco }} por {{ cfg.PREMIUM_DAYS }} dias de acesso, cobrado uma vez pelo Mercado Pago (Pix, cartão ou
+    boleto). Não há renovação automática: ao fim do período a conta volta para o Free, e você renova só se quiser.
+    Os dados de pagamento são tratados pelo Mercado Pago; nós não recebemos o número do seu cartão.</p>
+  <p>Você pode desistir em até 7 dias após o pagamento e receber o valor de volta, conforme o art. 49 do Código de Defesa do
+    Consumidor. Basta pedir por {{ contato }}. Depois desse prazo não há reembolso proporcional, exceto se o serviço ficar
+    indisponível por nossa culpa por mais de 72 horas seguidas.</p>
+
+  <h2>6. Conta e chave de acesso</h2>
+  <p>O acesso é feito por link enviado ao seu e-mail. A chave de acesso da extensão é pessoal; se suspeitar que vazou, gere
+    uma nova em Minha conta (a antiga para de funcionar na hora). Podemos suspender contas que violem estes Termos,
+    com reembolso proporcional quando a suspensão não decorrer de violação.</p>
+
+  <h2>7. Disponibilidade</h2>
+  <p>O serviço depende do YouTube, que muda com frequência e pode bloquear ou limitar o acesso. Trabalhamos para manter tudo
+    funcionando (incluindo atualizações automáticas), mas não garantimos que todo vídeo poderá ser baixado nem que o serviço
+    ficará disponível sem interrupções.</p>
+
+  <h2>8. Limitação de responsabilidade</h2>
+  <p>Na medida permitida pela lei, não respondemos por danos indiretos, perda de dados ou pelo uso que você fizer dos arquivos.
+    Nossa responsabilidade total fica limitada ao valor que você pagou nos últimos 30 dias. Nada aqui afasta direitos que o
+    Código de Defesa do Consumidor garante a você.</p>
+
+  <h2>9. Pedidos de titulares de direitos</h2>
+  <p>Se você é titular de direitos e acredita que o serviço está sendo usado para violá-los, fale conosco por {{ contato }}
+    com a identificação da obra e do link. Analisamos e, quando cabível, bloqueamos o link no serviço.</p>
+
+  <h2>10. Mudanças nestes Termos</h2>
+  <p>Podemos atualizar estes Termos. A data no topo mostra a versão em vigor; mudanças importantes serão avisadas no site
+    ou por e-mail.</p>
+
+  <h2>11. Lei e foro</h2>
+  <p>Estes Termos seguem as leis do Brasil. Fica eleito o foro do domicílio do consumidor.</p>
+</article>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% set lim = cfg.limits_for('premium' if is_premium else 'free') %}
+{% block conteudo %}
+<section class="deck" aria-labelledby="titulo">
+  <h1 id="titulo">Baixe a música do YouTube em MP3, direto do navegador.</h1>
+  <p class="sub">Cole o link do vídeo, escolha o formato e o arquivo vai para a pasta de downloads do seu computador.</p>
+
+  <form id="form" class="painel" novalidate
+        data-plano="{{ 'premium' if is_premium else 'free' }}"
+        data-audio="{{ lim.audio_kbps|join(',') }}" data-video="{{ lim.video_heights|join(',') }}"
+        data-padrao-audio="{{ lim.default_kbps }}" data-padrao-video="{{ lim.default_height }}"
+        data-max-min="{{ lim.max_duration_min }}">
+    <label class="rotulo" for="url">Link do YouTube</label>
+    <div class="linha-url">
+      <input id="url" name="url" type="url" inputmode="url" autocomplete="off" spellcheck="false"
+             placeholder="https://www.youtube.com/watch?v=..." required>
+      <button id="colar" type="button" class="btn-sec" hidden>Colar</button>
+    </div>
+
+    <div id="previa" class="previa" hidden aria-live="polite">
+      <img id="previa-capa" alt="" width="120" height="68">
+      <div class="previa-texto">
+        <strong id="previa-titulo"></strong>
+        <span id="previa-meta"></span>
+        <span id="previa-alerta" class="previa-alerta" hidden></span>
+      </div>
+    </div>
+
+    <div class="controles">
+      <fieldset class="seg">
+        <legend class="rotulo">Tipo</legend>
+        <label><input type="radio" name="kind" value="audio" checked><span>Áudio</span></label>
+        <label><input type="radio" name="kind" value="video"><span>Vídeo</span></label>
+      </fieldset>
+      <fieldset class="seg" id="formatos">
+        <legend class="rotulo">Formato</legend>
+      </fieldset>
+      <div class="campo-qualidade">
+        <label class="rotulo" for="qualidade">Qualidade</label>
+        <select id="qualidade" name="quality"></select>
+      </div>
+      <button id="baixar" type="submit" class="btn">Baixar</button>
+    </div>
+
+    <div class="medidor" id="medidor" data-estado="parado" aria-hidden="true">
+      <div class="segmentos" id="segmentos"></div>
+    </div>
+    <div class="status" role="status" aria-live="polite">
+      <span id="etapa">Pronto para baixar.</span>
+      <span id="pct" class="pct"></span>
+    </div>
+    <div id="resultado" class="resultado" hidden>
+      <span id="arquivo-nome"></span>
+      <a id="salvar" class="btn-sec" href="#" download>Salvar de novo</a>
+    </div>
+    <p id="aviso" class="aviso" hidden></p>
+  </form>
+
+  <p class="uso" id="uso">
+    {% if is_premium %}Premium ativo: até {{ cfg.PREMIUM_DAILY_LIMIT }} downloads por dia, vídeos de até {{ cfg.PREMIUM_MAX_DURATION_MIN }} min.
+    {% else %}Plano Free: até {{ cfg.FREE_LIMIT_PER_HOUR }} downloads por hora, vídeos de até {{ cfg.FREE_MAX_DURATION_MIN }} min.{% endif %}
+  </p>
+</section>
+
+<section id="planos" class="planos" aria-labelledby="titulo-planos">
+  <h2 id="titulo-planos">Free no site, Premium na extensão</h2>
+  <p class="sub">O site é gratuito. O Premium libera a extensão do navegador, que baixa direto da página do YouTube e guarda tudo que você já baixou.</p>
+  <div class="tabela-wrap">
+    <table>
+      <thead>
+        <tr><th scope="col"><span class="sr">Recurso</span></th><th scope="col">Free</th><th scope="col" class="destaque">Premium</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Preço</th><td>Grátis</td><td class="destaque">{{ preco }} por {{ cfg.PREMIUM_DAYS }} dias, no Pix ou cartão</td></tr>
+        <tr><th scope="row">Onde usa</th><td>Neste site</td><td class="destaque">Extensão do Chrome, Edge e Firefox, e neste site</td></tr>
+        <tr><th scope="row">Qualidade do áudio</th><td>MP3 até {{ cfg.FREE_AUDIO_KBPS|max }} kbps</td><td class="destaque">MP3 até {{ cfg.PREMIUM_AUDIO_KBPS|max }} kbps</td></tr>
+        <tr><th scope="row">Qualidade do vídeo</th><td>Até {{ cfg.FREE_VIDEO_HEIGHTS|max }}p</td><td class="destaque">Até 4K ({{ cfg.PREMIUM_VIDEO_HEIGHTS|max }}p)</td></tr>
+        <tr><th scope="row">Capa, artista e título no arquivo</th><td>Sim</td><td class="destaque">Sim</td></tr>
+        <tr><th scope="row">Duração por vídeo</th><td>Até {{ cfg.FREE_MAX_DURATION_MIN }} min</td><td class="destaque">Até {{ cfg.PREMIUM_MAX_DURATION_MIN }} min</td></tr>
+        <tr><th scope="row">Links por vez</th><td>1</td><td class="destaque">Até {{ cfg.PREMIUM_MAX_LINKS }}</td></tr>
+        <tr><th scope="row">Playlist inteira</th><td>Não</td><td class="destaque">Até {{ cfg.PREMIUM_MAX_PLAYLIST }} faixas, em .zip</td></tr>
+        <tr><th scope="row">Quantidade</th><td>{{ cfg.FREE_LIMIT_PER_HOUR }} downloads por hora</td><td class="destaque">{{ cfg.PREMIUM_DAILY_LIMIT }} downloads por dia</td></tr>
+        <tr><th scope="row">Histórico e baixar de novo</th><td>Não</td><td class="destaque">Sim, com busca e troca de formato</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cta">
+    {% if is_premium %}
+      <a class="btn" href="/conta">Ver minha assinatura</a>
+    {% elif usuario %}
+      <form method="post" action="/assinar"><input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="btn" type="submit">Assinar Premium por {{ preco }}</button></form>
+    {% else %}
+      <a class="btn" href="/entrar?proximo=/conta">Assinar Premium por {{ preco }}</a>
+    {% endif %}
+    <p class="nota">Sem renovação automática: você paga de novo só se quiser mais {{ cfg.PREMIUM_DAYS }} dias.</p>
+  </div>
+</section>
+
+<section id="extensao" class="extensao" aria-labelledby="titulo-ext">
+  <h2 id="titulo-ext">Instalar a extensão Premium</h2>
+  <ol class="passos">
+    <li>Assine o Premium e, em <a href="/conta">Minha conta</a>, clique em <strong>Gerar chave de acesso</strong>.</li>
+    <li>Baixe a extensão para o <a href="/extensao/chrome.zip" class="link-forte">Chrome ou Edge</a>
+      ou para o <a href="/extensao/firefox.zip" class="link-forte">Firefox</a> e extraia a pasta.</li>
+    <li>No Chrome/Edge, abra <code>chrome://extensions</code>, ligue o <strong>Modo do desenvolvedor</strong> e clique em
+      <strong>Carregar sem compactação</strong>. No Firefox, abra <code>about:debugging</code>, clique em
+      <strong>Este Firefox</strong> e depois em <strong>Carregar extensão temporária</strong>.</li>
+    <li>Nas opções da extensão, cole a chave e clique em <strong>Salvar e testar conexão</strong>.</li>
+  </ol>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/app.js') }}"></script>{% endblock %}

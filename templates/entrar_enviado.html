@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block titulo %}Confira seu e-mail — {{ cfg.SITE_NAME }}{% endblock %}
+{% block conteudo %}
+<section class="pagina-estreita">
+  <h1 class="h1-menor">Confira seu e-mail</h1>
+  <p class="sub">Enviamos um link de acesso para <strong>{{ email }}</strong>. Ele vale por {{ cfg.LOGIN_LINK_TTL_MIN }} minutos e só funciona uma vez.
+    Se não chegar em 2 minutos, olhe a pasta de spam.</p>
+  {% if link_teste %}
+    <div class="painel aviso-teste">
+      <p><strong>Modo de teste:</strong> o envio de e-mail ainda não está configurado (YTD_SMTP_HOST), então o link aparece aqui.
+        Em produção ele só vai por e-mail.</p>
+      <a class="btn" href="{{ link_teste }}">Entrar com o link de teste</a>
+    </div>
+  {% endif %}
+  <p class="nota"><a href="/entrar">Usar outro e-mail</a></p>
+</section>
+{% endblock %}

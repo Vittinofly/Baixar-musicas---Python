@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Opções — YT Downloader Premium</title>
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    body { width: auto; max-width: 520px; margin: 40px auto; padding: 0 16px; font-size: 15px; }
+    h1 { font-size: 22px; letter-spacing: -.02em; margin: 0 0 6px; }
+    p { color: var(--tinta-2); margin: 0 0 20px; }
+    label { display: block; margin-bottom: 16px; }
+    input { width: 100%; font: inherit; color: var(--tinta); background: var(--painel); border: 1px solid var(--linha); border-radius: 7px; padding: 9px 11px; margin-top: 4px; }
+    .resultado { margin-top: 14px; font-weight: 600; }
+    .resultado.ok { color: var(--ok); } .resultado.erro { color: var(--erro); }
+  </style>
+</head>
+<body>
+  <h1>YT Downloader Premium</h1>
+  <p>Conecte a extensão ao servidor e informe sua chave de acesso.</p>
+  <form id="form">
+    <label><span class="rotulo">Endereço do servidor</span>
+      <input id="server" type="url" required placeholder="http://localhost:5000"></label>
+    <label><span class="rotulo">Chave de acesso</span>
+      <input id="key" type="password" required autocomplete="off" placeholder="ytd_..."></label>
+    <button class="btn" type="submit">Salvar e testar conexão</button>
+  </form>
+  <div id="resultado" class="resultado" role="status"></div>
+  <script src="api.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

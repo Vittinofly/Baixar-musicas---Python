@@ -1,0 +1,73 @@
+:root {
+  --fundo: #E6E9EE; --painel: #F7F8FA; --tinta: #1D2433; --tinta-2: #4A5468; --linha: #C9CFD9;
+  --cobalto: #2846C8; --cobalto-escuro: #1C339A; --ambar: #E89B0C; --seg-off: #D5DAE2; --erro: #B42318; --ok: #1F7A4D;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fundo: #141922; --painel: #1C2230; --tinta: #E7EAF0; --tinta-2: #A4ADBF; --linha: #333C4F;
+    --cobalto: #6F86F2; --cobalto-escuro: #8FA1F5; --ambar: #F2AE2E; --seg-off: #2A3242; --erro: #F97066; --ok: #4ADE9B;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  width: 380px; margin: 0; padding: 14px;
+  background: var(--fundo); color: var(--tinta);
+  font: 14px/1.45 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+:focus-visible { outline: 2px solid var(--cobalto); outline-offset: 2px; }
+.topo { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+.marca { font-size: 15px; font-weight: 800; letter-spacing: -.01em; }
+.selo { color: var(--cobalto); }
+.link { background: none; border: 0; padding: 0; color: var(--cobalto); font: inherit; cursor: pointer; text-decoration: underline; }
+
+.abas { display: flex; border-bottom: 1px solid var(--linha); margin-bottom: 12px; }
+.abas button {
+  flex: 1; background: none; border: 0; padding: 8px; font: inherit; font-weight: 600;
+  color: var(--tinta-2); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.abas button[aria-selected="true"] { color: var(--tinta); border-bottom-color: var(--cobalto); }
+
+.rotulo { display: block; font-size: 12px; font-weight: 600; color: var(--tinta-2); margin-bottom: 4px; }
+textarea, input[type="search"], select {
+  width: 100%; font: inherit; color: var(--tinta); background: var(--painel);
+  border: 1px solid var(--linha); border-radius: 7px; padding: 8px 10px;
+}
+textarea { resize: vertical; min-height: 60px; }
+.linha { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+.linha select { flex: 1; }
+.check { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.btn {
+  width: 100%; padding: 9px; font: inherit; font-weight: 700; color: #fff; cursor: pointer;
+  background: var(--cobalto); border: 1px solid var(--cobalto-escuro); border-radius: 7px;
+}
+.btn:hover { background: var(--cobalto-escuro); }
+.btn:disabled { opacity: .55; cursor: progress; }
+.erro { color: var(--erro); margin: 8px 0 0; }
+.vazio { color: var(--tinta-2); text-align: center; padding: 16px 8px; }
+.vazio .btn { width: auto; padding: 8px 18px; }
+
+ul { list-style: none; margin: 12px 0 0; padding: 0; }
+.fila li, .historico li { background: var(--painel); border: 1px solid var(--linha); border-radius: 8px; padding: 9px 10px; margin-bottom: 8px; }
+.titulo { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { color: var(--tinta-2); font-size: 12px; display: flex; justify-content: space-between; gap: 8px; margin-top: 2px; }
+.meta.erro { color: var(--erro); }
+.meta.ok { color: var(--ok); }
+
+/* mini medidor VU */
+.vu { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; height: 10px; margin-top: 6px; }
+.vu i { background: var(--seg-off); border-radius: 1px; }
+.vu i.on { background: var(--cobalto); }
+.vu i.on.pico { background: var(--ambar); }
+
+#busca { margin-bottom: 4px; }
+.historico { max-height: 360px; overflow-y: auto; }
+.acoes { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+.acoes select { width: auto; flex: 1; padding: 4px 6px; font-size: 12px; }
+.acoes button { font: inherit; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+.acoes .de-novo { background: var(--cobalto); color: #fff; border: 1px solid var(--cobalto-escuro); }
+.acoes .apagar { background: none; color: var(--tinta-2); border: 1px solid var(--linha); }
+.acoes a { font-size: 12px; color: var(--cobalto); }
+.uso { font-size: 12px; color: var(--tinta-2); margin-left: auto; margin-right: 10px; }

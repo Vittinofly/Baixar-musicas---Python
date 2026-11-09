@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}{{ cfg.SITE_NAME }}{% endblock %}</title>
+  <meta name="description" content="{% block descricao %}Baixe músicas em MP3 e vídeos em MP4 do YouTube direto pelo navegador.{% endblock %}">
+  <meta name="csrf-token" content="{{ csrf }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block estilos %}{% endblock %}
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+</head>
+<body class="{% block corpo_classe %}{% endblock %}">
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topo">
+    <a class="marca" href="/">
+      <svg class="marca-icone" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="3" y="14" width="4" height="8" rx="1"/><rect x="9" y="9" width="4" height="18" rx="1"/>
+        <rect x="15" y="5" width="4" height="22" rx="1"/><rect x="21" y="11" width="4" height="14" rx="1"/>
+        <rect x="27" y="16" width="2" height="6" rx="1"/>
+      </svg>
+      {{ cfg.SITE_NAME }}
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a href="/#planos">Planos</a>
+      {% if usuario %}
+        {% if usuario.is_admin %}<a href="/admin">Admin</a>{% endif %}
+        <a href="/conta" class="nav-conta">Minha conta{% if is_premium %} <span class="selo">Premium</span>{% endif %}</a>
+      {% else %}
+        <a href="/entrar" class="nav-conta">Entrar</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% with mensagens = get_flashed_messages(with_categories=true) %}
+    {% if mensagens %}
+      <div class="avisos">
+        {% for tipo, texto in mensagens %}<p class="flash flash-{{ tipo }}" role="status">{{ texto }}</p>{% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main id="conteudo">{% block conteudo %}{% endblock %}</main>
+
+  <footer class="rodape">
+    <nav aria-label="Rodapé">
+      <a href="/termos">Termos de uso</a>
+      <a href="/privacidade">Privacidade</a>
+      <button type="button" class="link-botao" data-abrir-suporte>Falar com o suporte</button>
+    </nav>
+    <p>{{ cfg.SITE_NAME }}, feito por {{ cfg.OWNER_NAME }}. Baixe apenas conteúdo que você tem direito de usar.
+      Os arquivos ficam no servidor por {{ cfg.FILE_TTL_MIN }} minutos e depois são apagados.</p>
+  </footer>
+
+  {% include '_suporte.html' %}
+  <script src="{{ url_for('static', filename='js/suporte.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

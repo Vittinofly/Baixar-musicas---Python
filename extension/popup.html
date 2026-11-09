@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>YT Downloader Premium</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="topo">
+    <strong class="marca">YT Downloader <span class="selo">Premium</span></strong>
+    <span id="uso" class="uso"></span>
+    <a href="#" id="abrir-opcoes" class="link">Opções</a>
+  </header>
+
+  <div id="sem-chave" class="vazio" hidden>
+    <p>Para usar o Premium, cole sua chave de acesso nas opções.</p>
+    <button id="ir-opcoes" class="btn">Abrir opções</button>
+  </div>
+
+  <div id="app" hidden>
+    <nav class="abas" role="tablist">
+      <button role="tab" id="aba-baixar" aria-selected="true" aria-controls="painel-baixar">Baixar</button>
+      <button role="tab" id="aba-historico" aria-selected="false" aria-controls="painel-historico">Histórico</button>
+    </nav>
+
+    <section id="painel-baixar" role="tabpanel" aria-labelledby="aba-baixar">
+      <form id="form">
+        <label class="rotulo" for="links">Links do YouTube (um por linha)</label>
+        <textarea id="links" rows="3" spellcheck="false" placeholder="https://www.youtube.com/watch?v=..."></textarea>
+        <div class="linha">
+          <select id="formato" aria-label="Formato e qualidade"></select>
+          <label class="check"><input type="checkbox" id="playlist"> Playlist inteira</label>
+        </div>
+        <button type="submit" class="btn" id="baixar">Baixar</button>
+        <p id="erro" class="erro" hidden></p>
+      </form>
+      <ul id="fila" class="fila" aria-live="polite"></ul>
+      <button id="limpar" class="link" hidden>Limpar concluídos</button>
+    </section>
+
+    <section id="painel-historico" role="tabpanel" aria-labelledby="aba-historico" hidden>
+      <input id="busca" type="search" placeholder="Buscar no histórico" aria-label="Buscar no histórico">
+      <ul id="historico" class="historico"></ul>
+      <p id="historico-vazio" class="vazio" hidden>Nada por aqui ainda. Tudo que você baixar com a extensão aparece nesta lista.</p>
+    </section>
+  </div>
+
+  <script src="api.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

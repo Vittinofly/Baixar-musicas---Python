@@ -1,0 +1,33 @@
+<button type="button" class="suporte-botao" id="suporte-botao" aria-expanded="false" aria-controls="suporte-painel">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  <span>Suporte</span>
+  <i class="suporte-ponto" id="suporte-ponto" hidden></i>
+</button>
+
+<section class="suporte-painel" id="suporte-painel" role="dialog" aria-label="Conversa com o suporte" hidden>
+  <header>
+    <div>
+      <strong>Fale com o suporte</strong>
+      <p>Respondemos aqui e por e-mail, normalmente no mesmo dia.</p>
+    </div>
+    <button type="button" class="suporte-fechar" id="suporte-fechar" aria-label="Fechar">×</button>
+  </header>
+
+  <form id="suporte-novo" class="suporte-form">
+    <label>Seu nome <input name="name" autocomplete="name" maxlength="100"></label>
+    <label>Seu e-mail <span class="opcional">(para receber a resposta)</span>
+      <input name="email" type="email" autocomplete="email" maxlength="200" value="{{ usuario.email if usuario else '' }}"></label>
+    <label>Como podemos ajudar? <textarea name="message" rows="4" required maxlength="4000"></textarea></label>
+    <button class="btn btn-cheio" type="submit">Enviar mensagem</button>
+    <p class="suporte-erro" hidden></p>
+  </form>
+
+  <div id="suporte-conversa" class="suporte-conversa" hidden>
+    <ol id="suporte-mensagens" class="suporte-mensagens" aria-live="polite"></ol>
+    <form id="suporte-responder" class="suporte-responder">
+      <textarea name="message" rows="2" required maxlength="4000" aria-label="Sua mensagem" placeholder="Escreva uma mensagem"></textarea>
+      <button class="btn" type="submit">Enviar</button>
+    </form>
+    <button type="button" class="link-botao suporte-nova" id="suporte-nova">Começar outra conversa</button>
+  </div>
+</section>

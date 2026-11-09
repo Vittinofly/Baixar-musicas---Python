@@ -1,0 +1,22 @@
+# Rodar em qualquer servidor com Docker (VPS) ou testar localmente:
+#   cp .env.example .env   (e preencha)
+#   docker compose up -d --build
+#   docker compose logs -f
+services:
+  app:
+    build: .
+    image: yt-downloader:latest
+    container_name: yt-downloader
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # Sem proxy na frente (teste local), use o IP real da conexão.
+      YTD_BEHIND_PROXY: ${YTD_BEHIND_PROXY:-0}
+    volumes:
+      - ytd-data:/data
+volumes:
+  ytd-data:

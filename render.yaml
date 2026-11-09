@@ -1,0 +1,34 @@
+# Deploy no Render (render.com): New > Blueprint > escolha este repositório.
+# O plano "Starter" é o mínimo com disco persistente (o banco e os logs ficam em /data).
+services:
+  - type: web
+    name: yt-downloader
+    runtime: docker
+    plan: starter
+    region: oregon
+    healthCheckPath: /api/health
+    disk:
+      name: ytd-data
+      mountPath: /data
+      sizeGB: 5
+    envVars:
+      - key: YTD_SECRET_KEY
+        generateValue: true
+      - key: YTD_PUBLIC_URL        # ex.: https://yt-downloader.onrender.com ou seu domínio
+        sync: false
+      - key: YTD_ADMIN_EMAILS      # seu e-mail: vira admin ao entrar
+        sync: false
+      - key: YTD_CONTACT_EMAIL
+        sync: false
+      - key: YTD_SMTP_HOST
+        sync: false
+      - key: YTD_SMTP_USER
+        sync: false
+      - key: YTD_SMTP_PASSWORD
+        sync: false
+      - key: YTD_SMTP_FROM
+        sync: false
+      - key: YTD_MP_ACCESS_TOKEN
+        sync: false
+      - key: YTD_MP_WEBHOOK_SECRET
+        sync: false

@@ -1,0 +1,5 @@
+flask>=3.0
+flask-cors>=4.0
+waitress>=3.0
+# O YouTube muda com frequência: mantenha o yt-dlp atualizado (pip install -U yt-dlp)
+yt-dlp>=2025.11.12

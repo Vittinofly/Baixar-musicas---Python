@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block titulo %}Painel — {{ cfg.SITE_NAME }}{% endblock %}
+{% block corpo_classe %}admin{% endblock %}
+{% block estilos %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+{% block conteudo %}
+<div class="adm">
+  <nav class="adm-menu" aria-label="Seções do painel">
+    <a href="#geral" data-aba="geral">Visão geral</a>
+    <a href="#suporte" data-aba="suporte">Suporte <span class="contador" id="cont-suporte" hidden></span></a>
+    <a href="#usuarios" data-aba="usuarios">Usuários</a>
+    <a href="#downloads" data-aba="downloads">Downloads</a>
+    <a href="#pagamentos" data-aba="pagamentos">Pagamentos</a>
+    <a href="#logs" data-aba="logs">Logs</a>
+    <a href="#sistema" data-aba="sistema">Sistema</a>
+  </nav>
+
+  <div class="adm-conteudo">
+    <!-- VISÃO GERAL -->
+    <section data-painel="geral" hidden>
+      <div class="adm-cabeca">
+        <h1>Visão geral</h1>
+        <button class="btn-sec" data-recarregar>Atualizar</button>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="cartao">
+        <div class="cartao-cabeca">
+          <h2>Downloads concluídos por dia</h2>
+          <div class="legenda" id="legenda">
+            <span><i class="cor-free"></i>Free</span><span><i class="cor-premium"></i>Premium</span>
+          </div>
+          <button class="link-botao" id="alternar-tabela" aria-pressed="false">Ver como tabela</button>
+        </div>
+        <div class="grafico" id="grafico" role="img" aria-label="Downloads concluídos por dia nos últimos 30 dias"></div>
+        <div id="grafico-tabela" class="tabela-wrap" hidden></div>
+      </div>
+      <div class="grade-2">
+        <div class="cartao"><h2>Mais baixados (7 dias)</h2><ol class="ranking" id="top"></ol></div>
+        <div class="cartao"><h2>Erros mais comuns (7 dias)</h2><ul class="ranking" id="top-erros"></ul></div>
+      </div>
+    </section>
+
+    <!-- SUPORTE -->
+    <section data-painel="suporte" hidden>
+      <div class="adm-cabeca">
+        <h1>Suporte</h1>
+        <select id="filtro-tickets" aria-label="Filtrar conversas">
+          <option value="open">Abertas</option><option value="closed">Encerradas</option><option value="">Todas</option>
+        </select>
+      </div>
+      <div class="suporte-adm">
+        <ul class="tickets" id="tickets"></ul>
+        <div class="ticket-detalhe" id="ticket-detalhe"><p class="vazio">Escolha uma conversa.</p></div>
+      </div>
+    </section>
+
+    <!-- USUÁRIOS -->
+    <section data-painel="usuarios" hidden>
+      <div class="adm-cabeca">
+        <h1>Usuários</h1>
+        <input type="search" id="busca-usuarios" placeholder="Buscar por e-mail" aria-label="Buscar usuários">
+        <form id="novo-usuario" class="inline-form"><input type="email" required placeholder="novo@email.com" aria-label="E-mail do novo usuário"><button class="btn-sec">Criar conta</button></form>
+      </div>
+      <div class="tabela-wrap"><table class="tabela-adm" id="tabela-usuarios"></table></div>
+    </section>
+
+    <!-- DOWNLOADS -->
+    <section data-painel="downloads" hidden>
+      <div class="adm-cabeca">
+        <h1>Downloads</h1>
+        <input type="search" id="busca-downloads" placeholder="Título, link, e-mail ou IP" aria-label="Buscar downloads">
+        <select id="filtro-status" aria-label="Situação"><option value="">Todas as situações</option><option value="done">Concluídos</option><option value="error">Com erro</option><option value="rejected">Recusados</option></select>
+        <select id="filtro-plano" aria-label="Plano"><option value="">Todos os planos</option><option value="free">Free</option><option value="premium">Premium</option></select>
+      </div>
+      <div class="tabela-wrap"><table class="tabela-adm" id="tabela-downloads"></table></div>
+    </section>
+
+    <!-- PAGAMENTOS -->
+    <section data-painel="pagamentos" hidden>
+      <div class="adm-cabeca"><h1>Pagamentos</h1><span class="etiqueta" id="modo-pagamento"></span></div>
+      <div class="tabela-wrap"><table class="tabela-adm" id="tabela-pagamentos"></table></div>
+    </section>
+
+    <!-- LOGS -->
+    <section data-painel="logs" hidden>
+      <div class="adm-cabeca">
+        <h1>Logs</h1>
+        <select id="log-arquivo" aria-label="Arquivo"><option value="app">Todos os eventos</option><option value="errors">Só avisos e erros</option></select>
+        <select id="log-nivel" aria-label="Nível mínimo"><option value="">Todos os níveis</option><option value="INFO">Info ou maior</option><option value="WARNING">Avisos e erros</option><option value="ERROR">Só erros</option></select>
+        <input type="search" id="log-busca" placeholder="Filtrar texto (ex.: job=, e-mail, IP)" aria-label="Filtrar logs">
+        <label class="check"><input type="checkbox" id="log-auto"> Atualizar sozinho</label>
+      </div>
+      <div class="logs" id="logs" role="log"></div>
+    </section>
+
+    <!-- SISTEMA -->
+    <section data-painel="sistema" hidden>
+      <div class="adm-cabeca"><h1>Sistema</h1></div>
+      <div class="grade-2">
+        <div class="cartao">
+          <h2>Acesso ao YouTube</h2>
+          <p class="texto-fraco">Testa, a partir deste servidor, se o YouTube está liberando downloads. Rode logo depois de cada deploy.</p>
+          <button class="btn" id="testar-youtube">Testar agora</button>
+          <div id="resultado-youtube" class="resultado-teste" aria-live="polite"></div>
+        </div>
+        <div class="cartao">
+          <h2>yt-dlp</h2>
+          <dl class="dados" id="ytdlp"></dl>
+          <button class="btn-sec" id="atualizar-ytdlp">Verificar e atualizar agora</button>
+          <div id="resultado-ytdlp" class="resultado-teste" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="grade-2">
+        <div class="cartao"><h2>Servidor</h2><dl class="dados" id="servidor"></dl></div>
+        <div class="cartao"><h2>Limites e configuração</h2><dl class="dados" id="limites"></dl></div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/admin.js') }}"></script>{% endblock %}

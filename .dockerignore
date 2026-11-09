@@ -1,0 +1,13 @@
+.git
+.gitignore
+.gitattributes
+venv/
+.venv/
+data/
+__pycache__/
+**/__pycache__/
+*.pyc
+ffmpeg.exe
+docs/
+.env
+*.log
